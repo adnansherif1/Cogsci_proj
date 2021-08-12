@@ -68,7 +68,7 @@ def plot_dense(dense_data, pivot_distances, normed_length=False):
 def x_for_dense(data, distances, normed_length=False):
     cumsum = distances.cumsum(0)
     normed = distances.new(distances.shape[0] + 1).zero_()
-    normed[1:] = cumsum  # / cumsum[-1]
+    normed[1:] = cumsum # / cumsum[-1]
     chain_count = distances.shape[0] + 1
     total_count = data.shape[0]
     assert (total_count - 1) % (chain_count - 1) == 0, "Cannot compute sub-image-count"
@@ -80,7 +80,7 @@ def x_for_dense(data, distances, normed_length=False):
         sub_normed[j:-1:sub_image_count + 1] = (1 - alpha) * normed[0:-1] + alpha * normed[1:]
     sub_normed[-1] = normed[-1]
     if normed_length:
-        sub_normed /= sub_normed[-1]
+        sub_normed /= sub_normed[-1].clone()
     return sub_normed
 
 

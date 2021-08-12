@@ -107,6 +107,8 @@ class ModelWrapper(ModelInterface):
         for param in self.stored_parameters:
             size = reduce(operator.mul, param.data.shape)
             data = param
+            # print(param)
+            # print(param.data)
             yield offset, data.data if not gradient else data.grad.data, size, False
             offset += size
         for buffer in self.stored_buffers:
@@ -126,7 +128,8 @@ class ModelWrapper(ModelInterface):
         for offset, data, size, is_buffer in self.iterate_params_buffers():
             # Copy coordinates
             if len(data.shape) == 0:
-                data[0] = self.coords[offset:offset + size].item()
+                #print(self.stored_parameters)
+                data = self.coords[offset:offset + size].item()
             else:
                 data[:] = self.coords[offset:offset + size].reshape(data.shape)
 

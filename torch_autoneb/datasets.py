@@ -1,11 +1,29 @@
 from itertools import product, repeat
-
+import torch
 from os.path import join, dirname
 from torch import FloatTensor, LongTensor, normal
 from torch.utils.data import Dataset
 from torchvision.datasets import CIFAR10, MNIST, CIFAR100
 from torchvision.transforms import Compose, Pad, ToTensor, RandomCrop, RandomHorizontalFlip
 
+class RandDataset(Dataset):
+    def __init__(self, data, labels, transform=None, target_transform=None):
+        self.data = data
+        self.labels = labels
+        self.transform = transform
+        self.target_transform = target_transform
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, idx):
+        inp = self.data[idx]
+        label = self.labels[idx]
+        if self.transform:
+            inp = self.transform(self.data[idx])
+        if self.target_transform:
+            label = self.target_transform(self.labels[idx])
+        return inp, label
 
 def load_dataset(name):
     root = join(dirname(dirname(__file__)), "tmp", name)
@@ -33,6 +51,14 @@ def load_dataset(name):
         }, (32, 32), 10
     elif name == "xor":
         pass
+    elif name == "custom":
+        data = [torch.rand(1,2) for i in range(10)]
+        labels = torch.randint(0, 10, (10,))
+
+        return {
+            "train": RandDataset(data,labels),
+            "test": RandDataset(data,labels),
+        }, (2,), 10
     raise ValueError(f"Unknown dataset {name}")
 
 

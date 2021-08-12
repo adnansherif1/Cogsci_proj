@@ -35,8 +35,9 @@ def find_minimum(model: models.ModelWrapper, optim_config: config.OptimConfig) -
         model.adapt_to_config(optim_config.eval_config)
 
     # Optimise
+    loss = []
     for _ in helper.pbar(range(optim_config.nsteps), "Find mimimum"):
-        model.apply(gradient=True)
+        loss.append(model.apply(gradient=True))
         optimiser.step()
         if scheduler is not None:
             scheduler.step()
@@ -44,8 +45,8 @@ def find_minimum(model: models.ModelWrapper, optim_config: config.OptimConfig) -
     result = {
         "coords": model.get_coords().to("cpu"),
     }
-
     # Analyse
+    print(min(loss))
     analysis = model.analyse()
     logger.debug(f"Found minimum: {analysis}.")
     result.update(analysis)
