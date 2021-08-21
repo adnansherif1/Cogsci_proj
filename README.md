@@ -1,24 +1,7 @@
-# PyTorch-AutoNEB
+# Run Details.
 
-This framework implements NEB (Henkelman and Jónsson, 2000)
-and AutoNEB (Kolsbjerg, Groves and Hammer, 2016) in PyTorch.
-It efficiently finds low energy paths between minima of
-arbitrary loss/energy functions.
+This code is modified from the codebase linked with the paper to make it applicable to the questions answered in the final report.
 
-This framework was developed to be applied to neural networks,
-but is truely generic to any (Auto)NEB+Python application.
-Several examples for neural network architectures are given.
-
-
-## Implemented models/loss functions
-
-The following neural network architecture are included:
-
-- simple CNNs and MLPs,
-- ResNets,
-- DenseNets
-
-They can be applied on MNIST, CIFAR10 and CIFAR100.
 
 
 ## Installation
@@ -39,7 +22,7 @@ conda install tqdm
 Download/Clone the code using
 
 ```
-git clone https://github.com/fdraxler/PyTorch-AutoNEB
+git clone https://github.com/adnansherif1/Cogsci_proj.git
 cd PyTorch-AutoNEB
 ```
 
@@ -47,29 +30,15 @@ cd PyTorch-AutoNEB
 
 ### Running the examples
 
-```
-python main.py project_directory config_file
-```
+To evaluate the results simply run the **evaluation.ipynb** notebook it contains all the necessary details.
 
-where `project_directory` is the directory (need not exist) where the data should be stored.
-`config_file` should point to one of the `.yaml` files in [configs](configs).
+The yaml file used for project training is in **configs/cogsci.yaml**
+The evaluation notebook is self explanatory.
+The project code uses a **custom pytorch dataset**  that creates random pairing from a **1*2 input space to a 10*1** output space.
+The dataset contains **30 examples**. A MLP with **2 hidden layers containing 10 units** each was used for training.
+6 random initial minimas were used and the low energy path connecting them was found using the above setup.
 
-You can create new config files by editing an existing, such as `configs/cifar10-resnet20.yaml`.
 
-
-### Use in your own code
-
-Install the `torch_autoneb` package by running
-
-```
-python setup.py
-```
-
-in the root directory of this repository. You can then use it in Python via
-
-```python
-import torch_autoneb
-```
 
 
 ## Results
